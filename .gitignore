@@ -15,3 +15,6 @@ docs-target/
 rocketchip.jar
 *#
 .#*
+.metals/
+.vscode/
+.bloop/
