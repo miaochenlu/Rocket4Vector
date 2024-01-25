@@ -4,7 +4,6 @@ project/target
 docs/generated
 docs-target/
 *.fir
-*.v
 *.anno.json
 *.swp
 *~
@@ -15,3 +14,9 @@ docs-target/
 rocketchip.jar
 *#
 .#*
+.bloop/*
+.metals/*
+./vscode/*
+./project/*
+src/main/scala/smartvector/*
+riscv-vector*

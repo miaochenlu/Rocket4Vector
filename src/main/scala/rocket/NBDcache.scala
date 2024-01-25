@@ -707,6 +707,9 @@ class NonBlockingDCacheModule(outer: NonBlockingDCache) extends HellaCacheModule
   require(cacheParams.tagCode.isInstanceOf[IdentityCode])
   val dECC = cacheParams.dataCode
 
+  io.cpu := DontCare
+  io.errors := DontCare
+
   val wb = Module(new WritebackUnit)
   val prober = Module(new ProbeUnit)
   val mshrs = Module(new MSHRFile)
@@ -790,7 +793,7 @@ class NonBlockingDCacheModule(outer: NonBlockingDCache) extends HellaCacheModule
 
   // tags
   def onReset = L1Metadata(0.U, ClientMetadata.onReset)
-  val meta = Module(new L1MetadataArray(onReset _))
+  val meta = Module(new L1MetadataArray(() => onReset ))
   val metaReadArb = Module(new Arbiter(new L1MetaReadReq, 5))
   val metaWriteArb = Module(new Arbiter(new L1MetaWriteReq, 2))
   meta.io.read <> metaReadArb.io.out

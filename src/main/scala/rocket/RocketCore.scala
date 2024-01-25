@@ -829,7 +829,7 @@ class Rocket(tile: RocketTile)(implicit p: Parameters) extends CoreModule()(p)
   val wb_set_sboard = wb_ctrl.div || wb_dcache_miss || wb_ctrl.rocc
     //wzw 防止vpu产生的写后读问题
   //val id_set_sboard = id_ctrl.vector
-  val replay_wb_common = (io.dmem.s2_nack && !vinst_accessing )|| wb_reg_replay
+  val replay_wb_common = (io.dmem.s2_nack )|| wb_reg_replay
   val replay_wb_rocc = wb_reg_valid && wb_ctrl.rocc && !io.rocc.cmd.ready
   val replay_wb = replay_wb_common || replay_wb_rocc
   take_pc_wb := replay_wb || wb_xcpt || csr.io.eret || wb_reg_flush_pipe
@@ -1246,7 +1246,7 @@ vectorQueue.io.dequeueInfo.ready := io.vpu_issue.ready
   
   
   //若是vpu出现异常的话是否添加冲刷指令?
-  io.dmem.s1_kill := (killm_common || mem_ldst_xcpt || fpu_kill_mem) && !vinst_accessing
+  io.dmem.s1_kill := (killm_common || mem_ldst_xcpt || fpu_kill_mem)
   io.dmem.s2_kill := false.B
   // don't let D$ go to sleep if we're probably going to use it soon
   io.dmem.keep_clock_enabled := ibuf.io.inst(0).valid && id_ctrl.mem && !csr.io.csr_stall
